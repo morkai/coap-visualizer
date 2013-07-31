@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>CoAP Visualizer</title>
+  <link rel="stylesheet" href="/index.css">
+</head>
+<body>
+<div id="options">
+  <label><input id="capture" type="checkbox" value="1" {{- capturing ? 'checked' : '' }}> Capture</label>
+  <button id="clear">Clear</button>
+  <label>Client endpoint: <input id="endpoint-client" type="text" value="{{- clientEndpointAddress }}"></label>
+  <label>Server endpoint: <input id="endpoint-server" type="text" value="{{- serverEndpointAddress }}"></label>
+</div>
+<div id="arrow-down"></div>
+<div id="messages"><br style="clear: both"></div>
+<script src="/socket.io/socket.io.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
+<script>
+window.CAPTURED_MESSAGES = {{- JSON.stringify(captured) }};
+</script>
+<script src="/index.js"></script>
+<script id="messageBoxInnerTpl" type="text/x-underscore">
+<div class="message-box-inner <%- classNames %>">
+  <div class="message-header cf">
+    <div class="message-header-box">
+      <span class="message-property-name">Version</span>
+      <span class="message-property-bnb">0 1</span>
+      <span class="message-header-value">1</span>
+    </div>
+    <div class="message-header-box">
+      <span class="message-property-name">Type</span>
+      <span class="message-property-bnb"><%- typeBits %></span>
+      <span class="message-header-value"><%- typeName %></span>
+    </div>
+    <div class="message-header-box">
+      <span class="message-property-name">Token Length</span>
+      <span class="message-property-bnb"><%- tokenLengthBits %></span>
+      <span class="message-header-value"><%- tokenLength %> <%= tokenLength === 1 ? 'byte' : 'bytes' %></span>
+    </div>
+    <div class="message-header-box">
+      <span class="message-property-name">Code</span>
+      <span class="message-property-bnb"><em><%- codeClassBits %></em> <%- codeDetailBits %></span>
+      <span class="message-header-value"><%- codeName %></span>
+    </div>
+    <div class="message-header-box">
+      <span class="message-property-name">Message ID</span>
+      <span class="message-property-bnb"><%- idHex %></span>
+      <span class="message-header-value"><%- id %></span>
+    </div>
+  </div>
+  <% if (tokenLength > 0) { %>
+  <hr>
+  <div class="message-token">
+    <span class="message-property-name">Token:</span>
+    <span class="message-property-bnb"><%- tokenBytes %></span>
+  </div>
+  <% } %>
+  <% if (options.length > 0) { %>
+  <hr>
+  <ol class="message-options">
+    <% options.forEach(function(option) { %>
+    <li class="message-option">
+      <span class="message-property-name"><%- option.name %>:</span>
+      <span class="message-property-bnb"><%- option.dataString %></span>
+    </li>
+    <% }) %>
+  </ol>
+  <% } %>
+  <% if (payloadLength > 0) { %>
+  <hr>
+  <div class="message-payload">
+    <span class="message-property-name cf">
+      <label class="message-payload-readable-label">Readable <input class="message-payload-readable-toggle" type="checkbox" value="1" checked></label>
+      Payload (<%- payloadLength %> <%- payloadLength === 1 ? 'byte' : 'bytes' %>)
+    </span>
+    <div class="message-property-bnb message-payload-readable"><%- payloadString %></div>
+    <div class="message-property-bnb message-payload-buffer"><%- payloadBytes %></div>
+  </div>
+  <% } %>
+</div>
+</script>
+</body>
+</html>
