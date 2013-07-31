@@ -3,6 +3,8 @@
 Simple application for visualizing the communication between the CoAP client
 and the CoAP server.
 
+![Screenshot](app/screenshot.png)
+
 ## Requirements
 
 ### node.js
