@@ -19,7 +19,8 @@
   "dependencies": {
     "h5.coap": "git://github.com/morkai/h5.coap.git",
     "socket.io": "~0.9.16",
-    "express": "~3.3.1"
+    "express": "~3.3.1",
+    "ejs": "~0.8.4"
   },
   "scripts": {
     "start": "node ./app/server.js"
